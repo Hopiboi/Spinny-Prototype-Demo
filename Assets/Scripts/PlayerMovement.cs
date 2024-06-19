@@ -24,9 +24,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void Movement()
     {
-        //fixed update if its not possible
+        //Rotation
         this.transform.Rotate(new Vector3(0, 0, rotationSpeed));
 
+        //Movement
         if (Input.GetKey(KeyCode.Q))
         {
             this.transform.Rotate(new Vector3(0, 0, doubleRotationSpeed));
@@ -42,7 +43,7 @@ public class PlayerMovement : MonoBehaviour
             this.transform.position += Vector3.right * this.movementSpeed * Time.deltaTime;
         }
 
-        else if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W))
         {
             this.transform.position += Vector3.up * this.movementSpeed * Time.deltaTime;
         }
