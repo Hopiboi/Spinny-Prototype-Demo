@@ -12,6 +12,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float doubleRotationSpeed = 7f;
     [SerializeField] private float rotationSpeed = 1f;
 
+    [Header("Boolean Condition")]
+    [SerializeField] private bool canRotateReverse = false;
+
+
     private void Awake()
     {
         rg2D = GetComponent<Rigidbody2D>();
@@ -22,17 +26,16 @@ public class PlayerMovement : MonoBehaviour
         Movement();
     }
 
+    //add confuse movement
+    //debuff
+    //add run movement
+    //add conditional if its confuse or proper movement
     public void Movement()
     {
-        //Rotation
-        this.transform.Rotate(new Vector3(0, 0, rotationSpeed));
+
+        RotationControls();
 
         //Movement
-        if (Input.GetKey(KeyCode.Q))
-        {
-            this.transform.Rotate(new Vector3(0, 0, doubleRotationSpeed));
-        }
-
         if (Input.GetKey(KeyCode.A))
         {
             this.transform.position += Vector3.left  * this.movementSpeed * Time.deltaTime;
@@ -54,5 +57,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    // add reverse rotation
+    // conditional reverse rotation
+    public void RotationControls()
+    {
+        //Rotation
+        this.transform.Rotate(new Vector3(0, 0, rotationSpeed));
 
+        if (Input.GetKey(KeyCode.Q))
+        {
+            this.transform.Rotate(new Vector3(0, 0, doubleRotationSpeed));
+        }
+    }
 }
