@@ -9,11 +9,13 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement Speed")]
     [SerializeField] private float movementSpeed = 7f;
+    [SerializeField] private float sprintSpeed = 12f;
     [SerializeField] private float doubleRotationSpeed = 7f;
     [SerializeField] private float rotationSpeed = 1f;
 
     [Header("Boolean Condition")]
-    [SerializeField] private bool canRotateReverse = false;
+    private bool canReverseRight = true;
+    private bool canReverseLeft = false;
 
 
     private void Awake()
@@ -23,22 +25,55 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Movement();
+        SpinnyMovement();
     }
 
-    //add confuse movement
-    //debuff
-    //add run movement
-    //add conditional if its confuse or proper movement
-    public void Movement()
+
+    public void SpinnyMovement()
+    {
+        MovementConditions();
+
+        if (canReverseRight == true)
+        {
+            RotationControls();
+
+            if (Input.GetKey(KeyCode.Q))
+            {
+                canReverseRight = false;
+                canReverseLeft = true;
+            }
+        }
+
+
+        else if (canReverseLeft == true)
+        {
+            ReverseRotationControls();
+
+            if (Input.GetKey(KeyCode.E))
+            {
+                canReverseRight = true;
+                canReverseLeft = false;
+            }
+        }
+    }
+
+    public void MovementConditions()
+    {
+        MovementKeys();
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            SprintMovementKeys();
+        }
+
+    }
+
+    public void MovementKeys()
     {
 
-        RotationControls();
-
-        //Movement
         if (Input.GetKey(KeyCode.A))
         {
-            this.transform.position += Vector3.left  * this.movementSpeed * Time.deltaTime;
+            this.transform.position += Vector3.left * this.movementSpeed * Time.deltaTime;
         }
 
         else if (Input.GetKey(KeyCode.D))
@@ -57,16 +92,49 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    // add reverse rotation
-    // conditional reverse rotation
+    public void SprintMovementKeys()
+    {
+
+        if (Input.GetKey(KeyCode.A))
+        {
+            this.transform.position += Vector3.left * this.sprintSpeed * Time.deltaTime;
+        }
+
+        else if (Input.GetKey(KeyCode.D))
+        {
+            this.transform.position += Vector3.right * this.sprintSpeed * Time.deltaTime;
+        }
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            this.transform.position += Vector3.up * this.sprintSpeed * Time.deltaTime;
+        }
+
+        else if (Input.GetKey(KeyCode.S))
+        {
+            this.transform.position += Vector3.down * this.sprintSpeed * Time.deltaTime;
+        }
+    }
+
     public void RotationControls()
     {
-        //Rotation
+        //Rotation Speed
         this.transform.Rotate(new Vector3(0, 0, rotationSpeed));
 
-        if (Input.GetKey(KeyCode.Q))
+        if (Input.GetKey(KeyCode.Space))
         {
             this.transform.Rotate(new Vector3(0, 0, doubleRotationSpeed));
+        }
+    }
+
+    public void ReverseRotationControls()
+    {
+        //Rotation Speed
+        this.transform.Rotate(new Vector3(0, 0, -rotationSpeed));
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            this.transform.Rotate(new Vector3(0, 0, -doubleRotationSpeed));
         }
     }
 }
